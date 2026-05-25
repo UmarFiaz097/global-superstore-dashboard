@@ -9,6 +9,12 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from pathlib import Path
+
+# Always resolve the data file relative to this script's location.
+# "Global_Superstore.txt" alone fails on Streamlit Cloud because the
+# working directory is not guaranteed to be the repo root.
+DATA_PATH = Path(__file__).parent / "Global_Superstore.txt"
 
 # ─────────────────────────────────────────────
 # STEP 1: PAGE CONFIG
@@ -30,7 +36,7 @@ st.markdown("Explore sales performance across regions, categories, and customer 
 # This is critical for a 15 MB file — without it the app would re-read on every click.
 @st.cache_data
 def load_data():
-    df = pd.read_csv("Global_Superstore.txt", sep="\t")
+    df = pd.read_csv(DATA_PATH, sep="\t")
 
     # --- Cleaning ---
     # Convert date strings to proper datetime so we can sort/filter by year later
